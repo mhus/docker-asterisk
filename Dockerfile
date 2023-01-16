@@ -23,6 +23,7 @@ RUN set -x \
 && make config \
 && ldconfig
 
+COPY run.sh /
 RUN set -x \
 && cd /tmp/asterisk-20.1.0 \
 && groupadd asterisk \
@@ -32,7 +33,8 @@ RUN set -x \
 && chown asterisk:asterisk /var/run/asterisk \
 && chown -R asterisk:asterisk /var/lib/asterisk/ \
 && chown -R asterisk /var/spool/asterisk \
-&& chown -R asterisk /var/log/asterisk
+&& chown -R asterisk /var/log/asterisk \
+&& chmod +x /run.sh
 
-USER asterisk
-CMD ["/usr/sbin/asterisk", "-T", "-fvvvv"]
+#CMD ["/usr/sbin/asterisk", "-T", "-fvvvv"]
+ENTRYPOINT [ "/run.sh" ]
